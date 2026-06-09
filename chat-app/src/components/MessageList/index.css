@@ -1,0 +1,83 @@
+.message-list {
+  list-style: none;
+  margin: 0;
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+
+  background-color: #f5f7fb;
+
+  background-image:
+    radial-gradient(
+      at 20% 20%,
+      rgba(99,102,241,0.12) 0,
+      transparent 50%
+    ),
+    radial-gradient(
+      at 80% 20%,
+      rgba(236,72,153,0.08) 0,
+      transparent 50%
+    ),
+    radial-gradient(
+      at 20% 80%,
+      rgba(59,130,246,0.08) 0,
+      transparent 50%
+    ),
+    radial-gradient(
+      at 80% 80%,
+      rgba(16,185,129,0.08) 0,
+      transparent 50%
+    );
+}
+
+.message-item {
+  margin-bottom: 12px;
+}
+
+.username {
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.message-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.message-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.message-list::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 20px;
+}
+
+.message-list::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.dark .message-list {
+  background-color: #0f172a;
+
+  background-image:
+    radial-gradient(
+      at 20% 20%,
+      rgba(99,102,241,0.15) 0,
+      transparent 50%
+    ),
+    radial-gradient(
+      at 80% 20%,
+      rgba(236,72,153,0.10) 0,
+      transparent 50%
+    ),
+    radial-gradient(
+      at 20% 80%,
+      rgba(59,130,246,0.10) 0,
+      transparent 50%
+    ),
+    radial-gradient(
+      at 80% 80%,
+      rgba(16,185,129,0.10) 0,
+      transparent 50%
+    );
+}
