@@ -7,7 +7,16 @@ const jwt = require('jsonwebtoken')
 const Database = require('better-sqlite3')
 
 const app = express()
-app.use(cors())
+
+// ─── CORS ─────────────────────────────────────────────────
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'https://chat-app-real-time-chat-application.vercel.app'
+  ],
+  credentials: true
+}))
+
 app.use(express.json())
 
 // ─── SQLite DB ─────────────────────────────────────────────
@@ -35,7 +44,7 @@ db.exec(`
   );
 `)
 
-const SECRET = 'chat_secret_123'
+const SECRET = process.env.JWT_SECRET || 'chat_secret_123'
 
 // ─── Auth Routes ───────────────────────────────────────────
 app.post('/api/register', async (req, res) => {
@@ -80,7 +89,14 @@ app.get('/api/online-users', (req, res) => {
 // ─── Socket.io ─────────────────────────────────────────────
 const server = http.createServer(app)
 const io = new Server(server, {
-  cors: { origin: 'http://localhost:3000', methods: ['GET', 'POST'] }
+  cors: {
+    origin: [
+      'http://localhost:3000',
+      'https://chat-app-real-time-chat-application.vercel.app'
+    ],
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
 })
 
 io.on('connection', (socket) => {
@@ -105,16 +121,13 @@ io.on('connection', (socket) => {
   })
 
   socket.on('send_message', (data) => {
-    // Save to DB
     db.prepare(`
       INSERT INTO messages (room, username, text, time)
       VALUES (?, ?, ?, ?)
     `).run(data.room || 'general', data.username, data.text, data.time)
-
     io.to(data.room || 'general').emit('receive_message', data)
   })
 
-  // Keep your existing typing events exactly as before
   socket.on('typing', (data) => {
     socket.broadcast.emit('user_typing', data)
   })
@@ -140,4 +153,5 @@ io.on('connection', (socket) => {
   })
 })
 
-server.listen(3001, () => console.log('Server running on port 3001'))
+const PORT = process.env.PORT || 3001
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`))
